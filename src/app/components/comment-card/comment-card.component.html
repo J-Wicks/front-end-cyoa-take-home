@@ -1,0 +1,8 @@
+<div class="comment-card">
+    <div class="comment" (click)="toggleHeightLimit()" [ngClass]="{'override-height': expand}">
+        {{message}}
+    </div>
+    <div class="anchor-bottom">
+        {{name}} on {{created | dateFormat:"dddd [at] h A"}}
+    </div>
+</div>
