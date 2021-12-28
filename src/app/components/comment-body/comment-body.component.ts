@@ -17,9 +17,13 @@ export class CommentBodyComponent implements OnInit {
   constructor(private commentProviderService: CommentProviderService) { }
 
   ngOnInit() {
-    this.fetchComments().subscribe(comments => {
-      this.comments$.next(comments);
-    });
+    this.fetchComments()
+    // .subscribe(comments => {
+    //   this.comments$.next(comments);
+    // });
+    this.commentProviderService.onFetchComments().subscribe(res=>{
+      console.log(res);
+    })
   }
 
   saveComment(commentObj: any) {

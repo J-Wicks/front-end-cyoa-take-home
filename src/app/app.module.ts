@@ -13,6 +13,15 @@ import { CommentBodyComponent } from './components/comment-body/comment-body.com
 import { SortPipe } from './pipes/sort.pipe';
 import { NewCommentBannerComponent } from './new-comment-banner/new-comment-banner.component';
 import { DateFormatPipe } from './pipes/date-format.pipe';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { environment } from 'src/environments/environment';
+
+const config: SocketIoConfig = {
+	url: environment.socketUrl,
+	options: {
+		transports: ['websocket']
+	}
+}
 
 @NgModule({
   declarations: [
@@ -29,6 +38,7 @@ import { DateFormatPipe } from './pipes/date-format.pipe';
     ReactiveFormsModule,
     BrowserModule,
     NgbModule,
+		SocketIoModule.forRoot(config), 
     HttpClientModule
   ],
   providers: [CommentProviderService],

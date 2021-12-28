@@ -2,18 +2,23 @@ import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { UserComment } from '../model/user-comment';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable()
 export class CommentProviderService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private socket: Socket) { }
 
-  public fetchComments(): Observable<any> {
-    return this.http.get("/api/getComments");
+  public fetchComments(): void {
+    this.socket.emit("message", "test");
+    // return this.http.get("/api/getComments");
   }
 
+  public onFetchComments(): Observable<any>{
+    return this.socket.fromEvent("getComments");
+  }
   public createComment(commentRequest: any): Observable<any>{
+    this.socket.emit("message", commentRequest);
     return this.http.post("/api/createComment", commentRequest).pipe(map((res: any) => {
       return res;
     }, catchError((err) => {
