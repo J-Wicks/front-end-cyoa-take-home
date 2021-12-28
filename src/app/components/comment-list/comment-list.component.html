@@ -1,4 +1,10 @@
 <div id="comment-list" class="container" *ngIf="comments">
+    <app-new-comment-banner 
+    *ngIf="newComments.length" 
+    [newComments]="newComments"
+    (clickShowComments)="mergeComments($event)">
+    </app-new-comment-banner>
+
     <app-comment-card *ngFor="let comment of comments | sort:'created':'desc'" [name]="comment.name"
         [message]="comment.message" [created]="comment.created">
     </app-comment-card>

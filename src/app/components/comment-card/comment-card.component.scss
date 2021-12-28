@@ -1,39 +1,44 @@
 .comment-card {
-    border: 1px solid gray;
-    min-height: 250px;
-    position: relative;
+  border: 1px solid gray;
+  min-height: 250px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-.anchor-bottom{
-    position: absolute;
-    bottom: 4px;
-    height: 25px;
-    padding: 4px 16px;
-    z-index: 1;
-    font-weight: 500;
+.anchor-bottom {
+  display: flex;
+  bottom: 4px;
+  height: 25px;
+  padding: 4px 16px;
+  z-index: 1;
+  font-weight: 500;
 }
 
-.comment{
-    max-height: calc(250px - 25px);
-    overflow: hidden;
-    padding: 4px 16px;
+.comment {
+  display: flex;
+  max-height: calc(250px - 25px);
+  overflow: hidden;
+  padding: 4px 16px;
 }
-.override-height{
-    max-height: none;
+.override-height {
+  max-height: none;
 }
-.override-height::after{
-    max-height: none;
+.override-height::after {
+  max-height: none;
 }
 .comment:not(.override-height):after {
-    content  : "";
-    position : absolute;
-    z-index  : 1;
-    bottom   : 0;
-    left     : 0;
-    pointer-events   : none;
-    background-image : linear-gradient(to bottom, 
-                      rgba(255,255,255, 0), 
-                      rgba(255,255,255, 1) 90%);
-    width    : 100%;
-    height   : 4em;
-  }
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1) 90%
+  );
+  width: 100%;
+  height: 4em;
+}

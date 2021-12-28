@@ -2,6 +2,6 @@
     <label for="name">Name</label>
     <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter username" name="name"
         ngModel required formControlName="name">
-    <textarea class="form-control" name="message" formControlName="message"></textarea>
-    <button type="submit" class="btn btn-primary">Comment</button>
+    <textarea class="form-control" name="message" formControlName="message" required></textarea>
+    <button type="submit" class="btn btn-primary" [disabled]="!commentForm.valid">Comment</button>
 </form>
