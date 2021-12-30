@@ -1,7 +1,9 @@
 <div class="container">
     <app-comment-form (onCommentSubmit)="saveComment($event)"></app-comment-form>
-    <app-new-comment-banner *ngIf="(newComments$ | async)?.length" [newComments]="newComments$ | async"
-        (clickShowComments)="mergeComments($event)">
-    </app-new-comment-banner>
-    <app-comment-list *ngIf="comments$ | async" [comments]="comments$ | async"></app-comment-list>
+    <app-comment-list 
+        *ngIf="comments$ | async" 
+        [newComments]="newComments$ | async"
+        (clickShowComments)="mergeComments($event)" 
+        [comments]="comments$ | async">
+    </app-comment-list>
 </div>

@@ -1,12 +1,16 @@
-input, label {
-    display:block;
+input,
+label {
+  display: block;
 }
 
-form>*{
-    margin:16px 0px;
+textarea {
+  height: 40%;
+}
+form > * {
+  margin: 16px 0px;
 }
 
 form {
-    width: 50vw;
-    max-width: 500px;
+  width: 50vw;
+  max-width: 500px;
 }

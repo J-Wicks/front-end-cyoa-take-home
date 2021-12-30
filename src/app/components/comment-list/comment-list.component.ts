@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-comment-list',
@@ -10,10 +10,18 @@ export class CommentListComponent implements OnInit {
   @Input()
   public comments: any;
 
+  @Input()
+  newComments: any;
+  @Output()
+  clickShowComments: EventEmitter<any> = new EventEmitter<any>();
+  
   constructor() { }
 
   ngOnInit() {
 
   }
 
+  mergeComments(event: any){
+    this.clickShowComments.emit(event);
+  }
 }
