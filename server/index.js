@@ -63,12 +63,9 @@ app.get('/', function(request, response) {
 // Websocket support - Add
 io.on('connection', socket => {
 
-  socket.on('addComment', (msg)=>{
-    comment.createComment(msg).then(() => {
-      // Need to emit all comments. Client side will filter out redundant ones.
-      comment.getComments().then(allComments => {
-        io.emit('commentAdded', allComments);
-      });
+  socket.on('addComment', (newComment)=>{
+    comment.createComment(newComment).then(() => {
+      io.emit('commentAdded', [newComment]);
     });
   });
 
