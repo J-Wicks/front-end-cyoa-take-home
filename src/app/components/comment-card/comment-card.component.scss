@@ -18,6 +18,7 @@
 .comment {
   display: flex;
   max-height: calc(250px - 25px);
+  min-height: calc(250px - 25px);
   overflow: hidden;
   padding: 4px 16px;
 }

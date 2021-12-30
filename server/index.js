@@ -3,9 +3,16 @@ const bodyParser = require('body-parser');
 
 const DataAccessObject = require('./dataAccessObject');
 const Comment = require('./comment');
+const port = process.env.PORT || 3001;
+
 
 const app = express();
-const port = process.env.PORT || 3001;
+const http = require('http');
+const server = http.createServer(app);
+
+const io = require('socket.io')(server);
+
+server.listen(port);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,6 +40,7 @@ app.get('/api/getComment/:id', function(request, response) {
 });
 
 app.get('/api/getComments', function(request, response) {
+  console.log("getting comments");
   comment.getComments().then(result => {
     response.send(result);
   });
@@ -44,12 +52,24 @@ app.get('/api/deleteComments', function(request, response) {
   });
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
-
 app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get('/', function(request, response) {
   const rootDir = __dirname.replace('/server', '');
   response.sendFile(`${rootDir}/src/index.html`);
+});
+
+// Websocket support - Add
+io.on('connection', socket => {
+
+  socket.on('addComment', (newComment)=>{
+    comment.createComment(newComment).then(() => {
+      io.emit('commentAdded', [newComment]);
+    });
+  });
+
+  socket.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
+  });
 });
