@@ -15,7 +15,7 @@ describe('CommentBodyComponent', () => {
       declarations: [ CommentBodyComponent ],
       providers: [{
         provide: CommentProviderService,
-        useValue: jasmine.createSpyObj('CommentProviderService', ['createComment', 'fetchComments','fetchComment'])
+        useValue: jasmine.createSpyObj('CommentProviderService', ['createComment', 'fetchComments','fetchComment', 'onCommentEmitted'])
      }],
      schemas:[CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -25,6 +25,8 @@ describe('CommentBodyComponent', () => {
     mockCommentProviderService.createComment.and.returnValue(of({id:1}));
     mockCommentProviderService.fetchComment.and.returnValue(of({message: "test"}));
     mockCommentProviderService.fetchComments.and.returnValue(of([{name: "default-comment"}]));
+    mockCommentProviderService.onCommentEmitted.and.returnValue(of([{name: "default-comment"}]));
+
 
 
   });
@@ -42,8 +44,8 @@ describe('CommentBodyComponent', () => {
   it('should save comment', () => {
     component.saveComment({});
     expect(mockCommentProviderService.createComment).toHaveBeenCalled();
-    expect(mockCommentProviderService.fetchComment).toHaveBeenCalledWith(1);
-    expect(component.newComments$.value).toEqual([{message: "test"}]);
+    expect(mockCommentProviderService.onCommentEmitted).toHaveBeenCalled();
+    expect(component.newComments$.value).toEqual([]);
   });
 
   it('should merge comment', () => {

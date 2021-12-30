@@ -9,19 +9,17 @@ export class CommentProviderService {
 
   constructor(private http: HttpClient, private socket: Socket) { }
 
-  public fetchComments(): void {
-    this.socket.emit("getComments", {});
+  public fetchComments(): Observable<any> {
+    return this.http.get("/api/getComments");
+    // this.socket.emit("getComments", {});
   }
 
-  public onFetchComments(): Observable<any>{
-    return this.socket.fromEvent("getComments");
+  public onCommentEmitted(): Observable<any>{
+    return this.socket.fromEvent("commentAdded");
   }
   public createComment(commentRequest: any): Observable<any>{
-    return this.http.post("/api/createComment", commentRequest).pipe(map((res: any) => {
-      return res;
-    }, catchError((err) => {
-      return of({ success: false, resource: err });
-    })));
+    this.socket.emit("addComment", commentRequest);
+    return this.socket.fromEvent("addComment");
   }
 
   public fetchComment(cid: number): Observable<any> {

@@ -6,7 +6,7 @@ const Comment = require('./comment');
 const port = process.env.PORT || 3001;
 
 
-const app = require('express')();
+const app = express();
 const http = require('http');
 const server = http.createServer(app);
 
@@ -52,8 +52,6 @@ app.get('/api/deleteComments', function(request, response) {
   });
 });
 
-// app.listen(port, () => console.log(`Listening on port ${port}`));
-
 app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
@@ -62,14 +60,19 @@ app.get('/', function(request, response) {
   response.sendFile(`${rootDir}/src/index.html`);
 });
 
+// Websocket support - Add
 io.on('connection', socket => {
-  socket.on('getComments', () => {
-    comment.getComments().then(result => {
-      io.emit('getComments', result);
+
+  socket.on('addComment', (msg)=>{
+    comment.createComment(msg).then(() => {
+      // Need to emit all comments. Client side will filter out redundant ones.
+      comment.getComments().then(allComments => {
+        io.emit('commentAdded', allComments);
+      });
     });
   });
-  socket.on("connect_error", (err) => {
 
+  socket.on("connect_error", (err) => {
     console.log(`connect_error due to ${err.message}`);
   });
 });
