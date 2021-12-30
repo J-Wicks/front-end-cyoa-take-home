@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
+import { Socket } from 'ngx-socket-io';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UserComment } from 'src/app/model/user-comment';
 import { CommentProviderService } from 'src/app/services/comment-provider.service';
@@ -14,13 +15,10 @@ export class CommentBodyComponent implements OnInit {
   notifications$: BehaviorSubject<any> = new BehaviorSubject([]);
   public comments$: BehaviorSubject<UserComment[]> = new BehaviorSubject<any>(null);
   public newComments$: BehaviorSubject<UserComment[]> = new BehaviorSubject<any>([]);
-  constructor(private commentProviderService: CommentProviderService) { }
+  constructor(private commentProviderService: CommentProviderService) {   }
 
   ngOnInit() {
-    this.fetchComments()
-    // .subscribe(comments => {
-    //   this.comments$.next(comments);
-    // });
+    this.fetchComments();
     this.commentProviderService.onFetchComments().subscribe(res=>{
       console.log(res);
     })

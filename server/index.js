@@ -3,16 +3,15 @@ const bodyParser = require('body-parser');
 
 const DataAccessObject = require('./dataAccessObject');
 const Comment = require('./comment');
-const Websocket = require('ws')
-const app = express();
 const port = process.env.PORT || 3001;
 
+
+const app = require('express')();
 const http = require('http');
 const server = http.createServer(app);
 
+const io = require('socket.io')(server);
 
-
-const wss = new Websocket.Server({ server });
 server.listen(port);
 
 app.use(bodyParser.json());
@@ -63,16 +62,14 @@ app.get('/', function(request, response) {
   response.sendFile(`${rootDir}/src/index.html`);
 });
 
-wss.on('connection', function(socket){
-  console.log("User Connected, ");
-  wss.on('message', function incoming(message) {
-    console.log('received: %s', message);
+io.on('connection', socket => {
+  socket.on('getComments', () => {
+    comment.getComments().then(result => {
+      io.emit('getComments', result);
+    });
   });
-  wss.on('getComments', function incoming(message) {
-    console.log('received: %s', message);
-  });
-  wss.on("connect_error", (err) => {
+  socket.on("connect_error", (err) => {
+
     console.log(`connect_error due to ${err.message}`);
- });
-  // wss.send('hello from the server!');
+  });
 });
