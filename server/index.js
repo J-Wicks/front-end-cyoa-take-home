@@ -64,8 +64,10 @@ app.get('/', function(request, response) {
 io.on('connection', socket => {
 
   socket.on('addComment', (newComment)=>{
-    comment.createComment(newComment).then(() => {
-      io.emit('commentAdded', [newComment]);
+    comment.createComment(newComment).then((saveCommentResponse) => {
+      comment.getComment(saveCommentResponse.id).then(savedComment => {
+        io.emit('commentAdded', [savedComment]);
+      });
     });
   });
 
